@@ -1,0 +1,139 @@
+# 本地模型部署与推理优化配置文件
+
+# 服务配置
+server:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1
+  log_level: "info"
+
+# 引擎配置
+engine:
+  # 是否使用模拟引擎（无 GPU 环境）
+  use_mock: true
+  # 默认推理引擎
+  default_engine: "mock"  # mock, vllm
+
+# 模型配置
+models:
+  # 预加载的模型列表
+  - name: "qwen-7b-chat"
+    path: "Qwen/Qwen-7B-Chat"
+    format: "pytorch"
+    quantization: "none"
+    max_model_len: 8192
+    gpu_memory_utilization: 0.9
+    tensor_parallel_size: 1
+    dtype: "auto"
+    auto_load: false  # 是否在启动时自动加载
+
+  - name: "qwen-7b-chat-gptq"
+    path: "Qwen/Qwen-7B-Chat-Int4"
+    format: "gptq"
+    quantization: "gptq"
+    max_model_len: 8192
+    gpu_memory_utilization: 0.9
+    tensor_parallel_size: 1
+    dtype: "float16"
+    auto_load: false
+
+  - name: "qwen-7b-chat-awq"
+    path: "Qwen/Qwen-7B-Chat-AWQ"
+    format: "awq"
+    quantization: "awq"
+    max_model_len: 8192
+    gpu_memory_utilization: 0.9
+    tensor_parallel_size: 1
+    dtype: "float16"
+    auto_load: false
+
+  - name: "llama2-7b-chat"
+    path: "meta-llama/Llama-2-7b-chat-hf"
+    format: "pytorch"
+    quantization: "none"
+    max_model_len: 4096
+    gpu_memory_utilization: 0.9
+    tensor_parallel_size: 1
+    dtype: "auto"
+    auto_load: false
+
+  - name: "chatglm3-6b"
+    path: "THUDM/chatglm3-6b"
+    format: "pytorch"
+    quantization: "none"
+    max_model_len: 8192
+    gpu_memory_utilization: 0.9
+    tensor_parallel_size: 1
+    dtype: "auto"
+    auto_load: false
+
+# 量化配置
+quantization:
+  # 默认量化方法
+  default_method: "gptq"
+  # 量化参数
+  gptq:
+    bits: 4
+    group_size: 128
+    desc_act: false
+    sym: true
+    true_sequential: true
+  awq:
+    bits: 4
+    group_size: 128
+  gguf:
+    bits: 4
+  # 量化输出目录
+  output_dir: "./quantized_models"
+
+# 推理配置
+inference:
+  # 默认采样参数
+  default_temperature: 0.7
+  default_top_p: 1.0
+  default_max_tokens: 512
+  # 流式输出配置
+  stream_chunk_size: 10
+  # 超时配置（秒）
+  request_timeout: 60
+  # 最大并发请求数
+  max_concurrent_requests: 100
+
+# vLLM 配置
+vllm:
+  # PagedAttention 配置
+  block_size: 16
+  max_num_batched_tokens: 8192
+  max_num_seqs: 256
+  # 调度策略
+  scheduler_policy: "fcfs"  # fcfs, priority
+  # 抢占模式
+  preemption_mode: "recompute"  # recompute, swap
+
+# GPU 配置
+gpu:
+  # 显存监控间隔（秒）
+  memory_monitor_interval: 5
+  # 显存阈值
+  memory_warning_threshold: 0.85
+  memory_critical_threshold: 0.95
+  # 自动卸载空闲模型
+  auto_unload_idle: true
+  idle_timeout: 3600  # 秒
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "./logs/inference.log"
+  max_size: 100  # MB
+  backup_count: 5
+
+# 安全配置
+security:
+  # API 密钥（为空则不启用）
+  api_key: ""
+  # 允许的 IP（为空则允许所有）
+  allowed_ips: []
+  # 请求速率限制
+  rate_limit: 100  # 每分钟请求数
