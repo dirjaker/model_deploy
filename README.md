@@ -1,3 +1,20 @@
+<div align="center">
+
+# 🚀 Model Deploy
+
+### 大模型一键部署平台
+
+[![平台](https://img.shields.io/badge/平台-3-blue?style=flat-square)]()
+[![量化](https://img.shields.io/badge/量化-3-green?style=flat-square)]()
+[![框架](https://img.shields.io/badge/框架-vLLM+TGI-orange?style=flat-square)]()
+[![更新](https://img.shields.io/badge/更新-2025.06-red?style=flat-square)]()
+
+*vLLM / TGI / Ollama · GGUF/GPTQ/AWQ 量化 · GPU 监控 · 一键部署*
+
+</div>
+
+---
+
 # 本地模型部署与推理优化
 
 一个完整的本地大模型部署方案，支持模型量化、推理加速、API 兼容、负载均衡。
