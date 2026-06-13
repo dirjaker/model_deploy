@@ -423,3 +423,40 @@ docker run -p 8000:8000 --gpus all model-deploy
 ## 📄 许可证
 
 MIT License
+
+## Web Dashboard
+
+A management dashboard is available at `src/web/`.
+
+```bash
+# Start the web dashboard
+python src/web/app.py
+
+# Or specify port
+python src/web/app.py --port 8080
+```
+
+Dashboard features:
+- Model loading and unloading
+- Real-time GPU memory monitoring
+- Chat interface for testing models
+- System status overview
+
+Access at: `http://localhost:8080`
+
+## macOS Application
+
+A native macOS application is available via py2app.
+
+```bash
+# Build the .app bundle
+python packaging/py2app_setup.py py2app
+
+# The app will be in dist/Model Deploy.app
+```
+
+The macOS app provides:
+- Start/stop web server button
+- Model management controls
+- Activity log display
+- Quick status overview
