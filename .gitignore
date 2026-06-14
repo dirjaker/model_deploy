@@ -84,3 +84,6 @@ htmlcov/
 # Distribution
 *.tar.gz
 *.whl
+# VitePress build output
+docs/.vitepress/dist/
+docs/.vitepress/cache/
