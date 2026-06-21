@@ -3,6 +3,7 @@ FastAPI 服务模块
 提供 OpenAI 兼容的 API 接口
 """
 import asyncio
+import os
 import logging
 import time
 from typing import Optional
@@ -103,9 +104,10 @@ app = FastAPI(
 )
 
 # 添加 CORS 中间件
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost,http://127.0.0.1").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
